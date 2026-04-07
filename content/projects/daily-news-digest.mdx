@@ -1,0 +1,35 @@
+---
+title: "Daily News Digest"
+tagline: "A personalized news aggregation service that fetches, summarizes, and delivers articles by email on your schedule."
+description: "Daily News Digest aggregates articles from sources you choose, generates AI summaries, and delivers them to your inbox on a daily or weekly schedule. Users subscribe to news sources by topic, set delivery preferences, and receive a curated digest without visiting any news sites directly.\n\nThe backend is a Rails application with a cron-driven pipeline: articles are fetched each morning, summarized, and queued for delivery. An admin interface manages sources, users, and scheduling. Supabase provides the database with Row Level Security enforced across all user-facing tables at the database layer, not just in application code.\n\nThe stack was deliberately simplified over time — Sidekiq was removed in favor of an async adapter after it proved unnecessary for the load, and SendGrid was swapped for Gmail SMTP to reduce external dependencies. The result is a system with fewer moving parts and easier deployment."
+architectureNote: "The fetch pipeline only pulls articles from sources that have at least one active subscriber — a single query filters NewsSource records by subscriber count before any API calls are made. This prevents unnecessary requests to sources nobody is reading and keeps the daily job fast regardless of how many sources are registered in the system. A complementary mechanism locks each cron task using Rails.cache with a 30-minute TTL and an ensure-based release — preventing duplicate concurrent runs without a separate queue system. Both decisions came from the same constraint: keep the infrastructure minimal while making the automated behavior correct."
+stack:
+  - Ruby on Rails
+  - Supabase
+  - PostgreSQL
+  - AI Summarization
+  - Docker
+  - Render
+liveUrl: ""
+githubUrl: "https://github.com/ashaw315/daily_news_digest"
+thumbnail: "/images/projects/daily-news-digest.svg"
+featured: true
+section: "project"
+year: 2025
+type: "Automation System"
+role: "Design & Engineering"
+---
+
+## Overview
+
+Daily News Digest aggregates articles from sources you choose, generates AI summaries, and delivers them to your inbox on a daily or weekly schedule. Users subscribe to news sources by topic, set delivery preferences, and receive a curated digest without visiting any news sites directly.
+
+## How it works
+
+The backend is a Rails application with a cron-driven pipeline: articles are fetched each morning, summarized, and queued for delivery. An admin interface manages sources, users, and scheduling. Supabase provides the database with Row Level Security enforced across all user-facing tables at the database layer, not just in application code.
+
+The stack was deliberately simplified over time — Sidekiq was removed in favor of an async adapter after it proved unnecessary for the load, and SendGrid was swapped for Gmail SMTP to reduce external dependencies. The result is a system with fewer moving parts and easier deployment.
+
+## Architecture
+
+The fetch pipeline only pulls articles from sources that have at least one active subscriber — a single query filters NewsSource records by subscriber count before any API calls are made. This prevents unnecessary requests to sources nobody is reading and keeps the daily job fast regardless of how many sources are registered in the system. A complementary mechanism locks each cron task using Rails.cache with a 30-minute TTL and an ensure-based release — preventing duplicate concurrent runs without a separate queue system. Both decisions came from the same constraint: keep the infrastructure minimal while making the automated behavior correct.

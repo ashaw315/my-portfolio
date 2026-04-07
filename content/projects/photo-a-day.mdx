@@ -1,0 +1,36 @@
+---
+title: "Photo a Day"
+tagline: "A personal daily photo journal that automates everything except taking the picture."
+description: "Photo a Day is a personal archive — one photo for every day, displayed in a minimal gallery with an AI-generated caption for each image. The entire system runs automatically once configured. The only manual step is taking the photo.\n\nPhotos arrive through an iOS Shortcut set as a daily automation. When it runs, it opens the camera or photo library, resizes the image, and uploads it to the server via a single API call. The backend stores the image in Cloudflare R2, generates a caption by passing the photo to the Claude API, and writes the metadata to Postgres — all in sequence before returning a response. The frontend is a Next.js gallery with horizontal scroll on desktop and vertical on mobile, a year filter, and a password-protected admin panel.\n\nThe system has been running continuously with zero ongoing maintenance — no dashboards to check, no jobs to monitor. It either works or it doesn't, and it almost always works."
+architectureNote: "The most deliberate decision was the no-gap guarantee. If midnight passes with no upload, a cron job pulls a random unused photo from a pre-loaded fallback pool and posts it automatically — so the gallery never has a missing day. The fallback pool self-recycles when images are deleted through the admin panel, and the cron job uses explicit transaction isolation to prevent race conditions between concurrent runs. Images are written to R2 before Postgres — if the database write fails, the image can be recovered; if R2 fails, there's nothing to save a record for. The write ordering reflects the actual dependency between the two stores."
+stack:
+  - Next.js
+  - TypeScript
+  - Cloudflare R2
+  - PostgreSQL
+  - Claude API
+  - Vercel
+  - iOS Shortcuts
+liveUrl: "https://photo-a-day-smoky.vercel.app"
+githubUrl: "https://github.com/ashaw315/photo-a-day"
+thumbnail: "/images/projects/photo-a-day.svg"
+featured: true
+section: "project"
+year: 2026
+type: "Personal Automation"
+role: "Design & Engineering"
+---
+
+## Overview
+
+Photo a Day is a personal archive — one photo for every day, displayed in a minimal gallery with an AI-generated caption for each image. The entire system runs automatically once configured. The only manual step is taking the photo.
+
+## How it works
+
+Photos arrive through an iOS Shortcut set as a daily automation. When it runs, it opens the camera or photo library, resizes the image, and uploads it to the server via a single API call. The backend stores the image in Cloudflare R2, generates a caption by passing the photo to the Claude API, and writes the metadata to Postgres — all in sequence before returning a response. The frontend is a Next.js gallery with horizontal scroll on desktop and vertical on mobile, a year filter, and a password-protected admin panel.
+
+The system has been running continuously with zero ongoing maintenance — no dashboards to check, no jobs to monitor. It either works or it doesn't, and it almost always works.
+
+## Architecture
+
+The most deliberate decision was the no-gap guarantee. If midnight passes with no upload, a cron job pulls a random unused photo from a pre-loaded fallback pool and posts it automatically — so the gallery never has a missing day. The fallback pool self-recycles when images are deleted through the admin panel, and the cron job uses explicit transaction isolation to prevent race conditions between concurrent runs. Images are written to R2 before Postgres — if the database write fails, the image can be recovered; if R2 fails, there's nothing to save a record for. The write ordering reflects the actual dependency between the two stores.

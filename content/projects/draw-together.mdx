@@ -1,0 +1,36 @@
+---
+title: "Draw Together"
+tagline: "A real-time collaborative drawing canvas where multiple users draw on the same surface simultaneously."
+description: "Draw Together is a shared canvas where multiple users can draw simultaneously — lines appear on everyone's screen in real time as they're made. Sessions are ephemeral by default, with the option to save and share the resulting image.\n\nThe frontend is a Next.js application with a Canvas API drawing layer. A separate Node.js Socket.IO server handles real-time event broadcasting, running as its own process independently of the Next.js deployment. MongoDB with GridFS handles binary image storage, chosen for its ability to stream large files without loading them fully into memory.\n\nThe project started with Pusher for managed WebSocket infrastructure, then migrated to a self-hosted Socket.IO server — trading operational simplicity for control over the connection lifecycle and eliminating per-connection costs."
+architectureNote: "Canvas state is kept consistent across clients by broadcasting stroke events rather than canvas snapshots. Each draw action emits a small event object (coordinates, color, brush size) that remote clients replay locally — keeping payloads small regardless of canvas size or session length. A five-point anti-aliasing technique smooths lines between broadcast intervals, and coordinate normalization ensures strokes land correctly across different screen sizes and device pixel ratios. Undo is intentionally local-only — undoing a remote user's stroke would be disruptive in a shared session, so each client manages its own history independently."
+stack:
+  - Next.js
+  - TypeScript
+  - Socket.IO
+  - MongoDB
+  - GridFS
+  - SCSS
+  - Vercel
+liveUrl: "https://draw-together-app.vercel.app"
+githubUrl: "https://github.com/ashaw315/draw-together-app"
+thumbnail: "/images/projects/draw-together.svg"
+featured: true
+section: "project"
+year: 2023
+type: "Real-Time Collaboration Tool"
+role: "Design & Engineering"
+---
+
+## Overview
+
+Draw Together is a shared canvas where multiple users can draw simultaneously — lines appear on everyone's screen in real time as they're made. Sessions are ephemeral by default, with the option to save and share the resulting image.
+
+## How it works
+
+The frontend is a Next.js application with a Canvas API drawing layer. A separate Node.js Socket.IO server handles real-time event broadcasting, running as its own process independently of the Next.js deployment. MongoDB with GridFS handles binary image storage, chosen for its ability to stream large files without loading them fully into memory.
+
+The project started with Pusher for managed WebSocket infrastructure, then migrated to a self-hosted Socket.IO server — trading operational simplicity for control over the connection lifecycle and eliminating per-connection costs.
+
+## Architecture
+
+Canvas state is kept consistent across clients by broadcasting stroke events rather than canvas snapshots. Each draw action emits a small event object (coordinates, color, brush size) that remote clients replay locally — keeping payloads small regardless of canvas size or session length. A five-point anti-aliasing technique smooths lines between broadcast intervals, and coordinate normalization ensures strokes land correctly across different screen sizes and device pixel ratios. Undo is intentionally local-only — undoing a remote user's stroke would be disruptive in a shared session, so each client manages its own history independently.

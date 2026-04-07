@@ -1,0 +1,39 @@
+---
+title: "Finance Tracker"
+tagline: "A personal finance dashboard that connects to real bank accounts, syncs transactions locally, and visualizes spending patterns."
+description: "Finance Tracker connects to real bank accounts through Plaid, pulling transaction data and surfacing spending patterns through a clean dashboard. It supports multiple institutions, automatic transaction categorization, subscription detection, and smart tagging — built as a tool for understanding money without sending your data to a third-party service.\n\nThe application is a Rails 7 API paired with a React 18 SPA. Transactions sync through Plaid's cursor-based incremental endpoint, meaning only new data is fetched on each refresh rather than re-pulling the full history. All other reads serve from a local PostgreSQL database, keeping the app fast and minimizing Plaid API calls.\n\nA demo mode is available via seed data — three accounts (checking, savings, credit card), 90 days of transactions, detected subscriptions, and tag rules — so the full application can be explored without real bank credentials."
+architectureNote: "The security architecture was the most deliberate part of this build. Plaid access tokens are encrypted at rest using Active Record Encryption rather than stored as plaintext strings — a four-step migration sequence handled re-encryption when the tokens moved between models during a PlaidItem extraction. Authentication uses JWT in HTTP-only signed cookies rather than localStorage, which prevents XSS access to tokens entirely. The Plaid API is only called during sync and token exchange — all other reads serve from local Postgres. The combination means the application handles real financial credentials without any of them being accessible to client-side JavaScript."
+stack:
+  - Ruby on Rails 7
+  - React 18
+  - Redux Toolkit
+  - PostgreSQL
+  - Plaid API
+  - Chart.js
+  - JWT
+  - Active Record Encryption
+  - RSpec
+  - Jest
+liveUrl: ""
+githubUrl: "https://github.com/ashaw315/finance-tracker"
+thumbnail: "/images/projects/finance-tracker.svg"
+featured: true
+section: "project"
+year: 2024
+type: "Full-Stack Application"
+role: "Design & Engineering"
+---
+
+## Overview
+
+Finance Tracker connects to real bank accounts through Plaid, pulling transaction data and surfacing spending patterns through a clean dashboard. It supports multiple institutions, automatic transaction categorization, subscription detection, and smart tagging — built as a tool for understanding money without sending your data to a third-party service.
+
+## How it works
+
+The application is a Rails 7 API paired with a React 18 SPA. Transactions sync through Plaid's cursor-based incremental endpoint, meaning only new data is fetched on each refresh rather than re-pulling the full history. All other reads serve from a local PostgreSQL database, keeping the app fast and minimizing Plaid API calls.
+
+A demo mode is available via seed data — three accounts (checking, savings, credit card), 90 days of transactions, detected subscriptions, and tag rules — so the full application can be explored without real bank credentials.
+
+## Architecture
+
+The security architecture was the most deliberate part of this build. Plaid access tokens are encrypted at rest using Active Record Encryption rather than stored as plaintext strings — a four-step migration sequence handled re-encryption when the tokens moved between models during a PlaidItem extraction. Authentication uses JWT in HTTP-only signed cookies rather than localStorage, which prevents XSS access to tokens entirely. The Plaid API is only called during sync and token exchange — all other reads serve from local Postgres. The combination means the application handles real financial credentials without any of them being accessible to client-side JavaScript.

@@ -1,0 +1,36 @@
+---
+title: "We Were Here Briefly"
+tagline: "An automated system that scrapes the internet for human residue and turns it into video, daily, without anyone watching."
+description: "The internet produces residue. Not content — residue. Fragments that accumulate in image search results, forum archives, metadata fields, alt text nobody wrote carefully. We Were Here Briefly collects this material daily, without intention, without curation, without a human deciding what counts.\n\nAn automated pipeline scrapes the web using a seed word list that mixes the mundane with the institutional. The day's fragments are condensed into a single sentence using one of five constrained personas, each with explicit anti-instructions: no metaphors about the ocean, no metaphors about stars or time. The sentence becomes a video. The videos datamosh together — not as an effect, but as a process of erasure and accumulation — into a continuous loop. It accumulates whether or not anyone is present to receive it.\n\nIt runs. The archive grows."
+architectureNote: "The datamosh is not a filter. The pipeline reads raw MPEG-2 bytes, locates picture start codes at 0x00 0x00 0x01 0x00, checks picture coding type bits, and rewrites I-frames as P-frames — collapsing the distinctions between discrete moments into a single smeared duration. This is the same operation the work performs conceptually: making the boundaries between days harder to find. The system never crashes on a missing service. Image scraping falls through Bing → Wikimedia → Flickr. Storage falls through Postgres → log.json. The frontend falls through API → direct URL. Cascading fallback everywhere — not as resilience engineering, but as a condition of the work. The archive continues regardless of what fails. Something always gets through."
+stack:
+  - Python
+  - Playwright
+  - Datamosh
+  - PostgreSQL
+  - Vercel
+liveUrl: "https://we-were-here-briefly.vercel.app"
+githubUrl: "https://github.com/ashaw315/we-were-here-briefly"
+thumbnail: "/images/projects/we-were-here-briefly.svg"
+featured: false
+section: "lab"
+year: 2026
+type: "Generative System / Conceptual Art"
+role: "Concept & Engineering"
+---
+
+## Overview
+
+The internet produces residue. Not content — residue. Fragments that accumulate in image search results, forum archives, metadata fields, alt text nobody wrote carefully. We Were Here Briefly collects this material daily, without intention, without curation, without a human deciding what counts.
+
+## How it works
+
+An automated pipeline scrapes the web using a seed word list that mixes the mundane with the institutional. The day's fragments are condensed into a single sentence using one of five constrained personas, each with explicit anti-instructions: no metaphors about the ocean, no metaphors about stars or time. The sentence becomes a video. The videos datamosh together — not as an effect, but as a process of erasure and accumulation — into a continuous loop. It accumulates whether or not anyone is present to receive it.
+
+It runs. The archive grows.
+
+## Architecture
+
+The datamosh is not a filter. The pipeline reads raw MPEG-2 bytes, locates picture start codes at 0x00 0x00 0x01 0x00, checks picture coding type bits, and rewrites I-frames as P-frames — collapsing the distinctions between discrete moments into a single smeared duration. This is the same operation the work performs conceptually: making the boundaries between days harder to find.
+
+The system never crashes on a missing service. Image scraping falls through Bing → Wikimedia → Flickr. Storage falls through Postgres → log.json. The frontend falls through API → direct URL. Cascading fallback everywhere — not as resilience engineering, but as a condition of the work. The archive continues regardless of what fails. Something always gets through.
