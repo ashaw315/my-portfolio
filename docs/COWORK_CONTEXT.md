@@ -139,52 +139,80 @@ type: Automation System
 role: Design & Engineering
 
 title: Daily News Digest
-tagline: A personalized news aggregation service that fetches,
-summarizes, and delivers articles by email on your schedule.
-liveUrl: (deployed on Render — fetch pipeline currently inactive)
+tagline: A personalized news aggregator that fetches,
+summarizes, and delivers daily email digests from RSS
+sources users actually subscribe to.
+liveUrl: https://daily-news-digest.onrender.com (fetch
+pipeline currently inactive due to Render free-tier
+inactivity timeout)
 githubUrl: https://github.com/ashaw315/daily_news_digest
 thumbnail: /images/projects/daily-news-digest.svg
 stack:
 
-- Ruby on Rails
-- Supabase
+- Ruby on Rails 7.1
 - PostgreSQL
-- AI Summarization
-- Docker
+- OpenAI GPT-3.5
+- Feedjira
+- Devise
+- Resend
 - Render
+- GitHub Actions
+- Supabase RLS
 
 description: |
-Daily News Digest aggregates articles from sources you choose,
-generates AI summaries, and delivers them to your inbox on a
-daily or weekly schedule. Users subscribe to news sources by
-topic, set delivery preferences, and receive a curated digest
-without visiting any news sites directly.
+Daily News Digest solves a simple problem: most news
+aggregators show you everything. This one only fetches
+what someone is actually waiting to read. Users sign up,
+choose their RSS sources, and receive a daily email digest
+with AI-generated summaries of each article.
 
-The backend is a Rails application with a cron-driven pipeline:
-articles are fetched each morning, summarized, and queued for
-delivery. An admin interface manages sources, users, and
-scheduling. Supabase provides the database with Row Level Security
-enforced across all user-facing tables at the database layer,
-not just in application code.
+The application handles the full pipeline: scheduled
+fetching from RSS feeds, full-text extraction with
+Readability, summarization and categorization via OpenAI,
+and email delivery through Resend. Each article is
+automatically classified into one of eight categories
+(Technology, Business, Politics, Science, Culture, Sports,
+Health, World) so the daily digest arrives organized by
+topic. An admin interface provides source management with
+live RSS validation, article previews with AI summaries,
+user administration, and email delivery metrics.
 
-The stack was deliberately simplified over time — Sidekiq was
-removed in favor of an async adapter after it proved unnecessary
-for the load, and SendGrid was swapped for Gmail SMTP to reduce
-external dependencies. The result is a system with fewer moving
-parts and easier deployment.
+The system was designed to run within tight infrastructure
+constraints — a 512MB Render instance with no background
+worker processes and no paid add-ons beyond the database.
+That constraint shaped most of the interesting architectural
+decisions: Sidekiq was removed in favor of Rails' built-in
+async adapter, memory monitoring is woven through every
+service class, article counts are hard-capped at every
+stage, and background jobs run in-process instead of
+requiring a separate worker.
 
 architectureNote: |
-The fetch pipeline only pulls articles from sources that have at
-least one active subscriber — a single query filters NewsSource
-records by subscriber count before any API calls are made. This
-prevents unnecessary requests to sources nobody is reading and
-keeps the daily job fast regardless of how many sources are
-registered in the system. A complementary mechanism locks each
-cron task using Rails.cache with a 30-minute TTL and an
-ensure-based release — preventing duplicate concurrent runs
-without a separate queue system. Both decisions came from the
-same constraint: keep the infrastructure minimal while making
-the automated behavior correct.
+The most considered decision in this codebase is the
+subscriber-gated fetch. The daily cron job doesn't pull
+from all active news sources — it only fetches from sources
+that have at least one subscribed user. This is a deliberate
+choice, not an optimization afterthought. RSS fetching
+involves HTTP requests, HTML parsing, content extraction,
+and database writes for each source. On a free-tier instance
+with hard memory limits, every unnecessary fetch is a risk.
+By gating on subscriber presence, the system only does work
+that will result in an email someone receives.
+
+Article categorization runs as a second AI pass after
+summarization. ArticleClassifierService sends each article's
+title and summary to GPT-3.5-turbo with a system prompt that
+constrains the response to one of eight fixed categories.
+The classifier validates the response against the allowed
+list, defaults to "World" on any failure, and never blocks
+article saving. The daily digest email template then groups
+articles by this AI-assigned topic with emoji section headers.
+
+The cron endpoints implement distributed task locking using
+Rails.cache with a 30-minute TTL and an ensure-based release
+— preventing duplicate concurrent runs without Redis. The CI
+pipeline includes a separate GitHub Actions cron workflow
+that wakes the Render instance before each job runs.
 
 ---
 
