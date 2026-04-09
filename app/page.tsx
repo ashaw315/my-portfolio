@@ -1,17 +1,14 @@
 import Hero from "@/components/home/Hero";
-import ProjectGrid from "@/components/home/ProjectGrid";
-import LabSection from "@/components/home/LabSection";
-import { getFeaturedProjects, getLabProjects } from "@/lib/projects";
+import ProjectTable from "@/components/home/ProjectTable";
+import { getAllProjects } from "@/lib/projects";
 
-export default function Home() {
-  const projects = getFeaturedProjects();
-  const labProjects = getLabProjects();
+export default async function Home() {
+  const projects = await getAllProjects();
 
   return (
-    <>
+    <div className="home-viewport">
       <Hero />
-      <ProjectGrid projects={projects} />
-      <LabSection projects={labProjects} />
-    </>
+      <ProjectTable projects={projects} />
+    </div>
   );
 }

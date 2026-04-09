@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <footer className="w-full max-w-content mx-auto px-6 py-12 mt-24 border-t border-border">
+    <footer className="layout-footer w-full max-w-content mx-auto px-6 py-4 border-t border-border">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-sm text-foreground/50">
         <span>&copy; {new Date().getFullYear()} Adam Shaw</span>
         <div className="flex items-center gap-6">

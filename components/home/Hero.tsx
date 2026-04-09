@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 
@@ -22,11 +23,18 @@ const itemVariants = {
 };
 
 export default function Hero() {
+  const isFirstRender = useRef(true);
+  const skipInitial = isFirstRender.current;
+  if (isFirstRender.current) {
+    isFirstRender.current = false;
+  }
+
   return (
     <motion.section
-      className="w-full max-w-content mx-auto px-6 pt-20 pb-8 sm:pt-32 sm:pb-12"
+      className="w-full max-w-content mx-auto px-6 pt-10 pb-4 sm:pt-16 sm:pb-6"
+      style={{ flexShrink: 0 }}
       variants={containerVariants}
-      initial="hidden"
+      initial={skipInitial ? false : "hidden"}
       animate="show"
     >
       <motion.h1
@@ -36,14 +44,14 @@ export default function Hero() {
         Adam Shaw
       </motion.h1>
       <motion.p
-        className="mt-6 text-lg sm:text-xl text-foreground/70 max-w-[540px] leading-relaxed"
+        className="mt-4 text-lg sm:text-xl text-foreground/70 max-w-[540px] leading-relaxed"
         variants={itemVariants}
       >
         Full-stack engineer and artist based in Brooklyn. I build web
         applications with a focus on thoughtful design and solid architecture.
       </motion.p>
       <motion.div
-        className="mt-8 flex items-center gap-8 text-sm"
+        className="mt-5 flex items-center gap-8 text-sm"
         variants={itemVariants}
       >
         <Link

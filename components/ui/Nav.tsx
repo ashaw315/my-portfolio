@@ -56,7 +56,7 @@ function NavLink({
 
 export default function Nav() {
   return (
-    <nav className="w-full max-w-content mx-auto px-6 py-8 flex items-center justify-between">
+    <nav className="w-full max-w-content mx-auto px-6 py-8 flex items-center justify-between" style={{ flexShrink: 0 }}>
       <Link
         href="/"
         className="font-serif text-lg tracking-tight hover:text-accent transition-colors"

@@ -13,7 +13,7 @@ export default function ProjectBody({ project }: ProjectBodyProps) {
       <div className="project-columns">
         <div className="project-main">
           <div className="prose">
-            <MDXRemote source={project.content} />
+            {project.body && <MDXRemote source={project.body} />}
           </div>
         </div>
         <ProjectSidebar project={project} />

@@ -29,7 +29,7 @@ export default function ProjectSidebar({ project }: ProjectSidebarProps) {
       </p>
 
       <div className="flex flex-wrap gap-2 mb-6">
-        {project.stack.map((tech) => (
+        {project.stack?.map((tech) => (
           <span
             key={tech}
             className="font-mono text-xs px-2.5 py-1 border border-border rounded-sm text-foreground/60"

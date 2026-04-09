@@ -1,9 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Image from "next/image";
 import Link from "next/link";
 import type { ProjectData } from "@/lib/projects";
+import { urlFor } from "@/sanity/lib/image";
 
 interface RelatedProjectsProps {
   projects: ProjectData[];
@@ -38,11 +38,10 @@ export default function RelatedProjects({ projects }: RelatedProjectsProps) {
             className="related-card"
           >
             {project.thumbnail && (
-              <Image
-                src={project.thumbnail}
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={urlFor(project.thumbnail).width(240).url()}
                 alt={`Screenshot of ${project.title}`}
-                width={120}
-                height={90}
                 className="related-card-image"
                 style={{
                   width: "120px",

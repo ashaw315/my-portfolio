@@ -45,9 +45,9 @@ export default function RootLayout({
       <body
         className={`${serif.variable} ${sans.variable} ${mono.variable} font-sans antialiased bg-background text-foreground`}
       >
-        <div className="min-h-screen flex flex-col">
+        <div className="layout-shell">
           <Nav />
-          <main className="flex-1">
+          <main className="layout-main">
             <PageTransition>{children}</PageTransition>
           </main>
           <Footer />
