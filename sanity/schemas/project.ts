@@ -62,10 +62,13 @@ export const projectSchema = defineType({
       type: "url",
     }),
     defineField({
-      name: "thumbnail",
-      type: "image",
-      options: { hotspot: true },
-      description: "Project thumbnail — upload directly in Studio",
+      name: "gallery",
+      title: "Gallery",
+      type: "array",
+      of: [{ type: "image", options: { hotspot: true } }],
+      description:
+        "3-5 images shown in the carousel on the project detail page",
+      validation: (r) => r.max(5),
     }),
     defineField({
       name: "stack",

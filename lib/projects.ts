@@ -6,18 +6,6 @@ import {
   relatedProjectsQuery,
 } from "@/sanity/lib/queries";
 
-export type SanityImage = {
-  _type: "image";
-  asset: {
-    _ref: string;
-    _type: "reference";
-  };
-  hotspot?: {
-    x: number;
-    y: number;
-  };
-};
-
 export type HomeProjectData = {
   slug: string;
   title: string;
@@ -26,7 +14,17 @@ export type HomeProjectData = {
   shortDescription?: string;
   tagline: string;
   liveUrl?: string;
-  thumbnail?: SanityImage;
+  thumbnail?: string;
+  section: string;
+};
+
+// Slim shape used by RelatedProjects — derived from gallery[0] in GROQ
+export type RelatedProjectData = {
+  slug: string;
+  title: string;
+  tagline: string;
+  type: string;
+  thumbnail?: string;
   section: string;
 };
 
@@ -41,7 +39,17 @@ export type ProjectData = {
   role?: string;
   liveUrl?: string;
   githubUrl?: string;
-  thumbnail?: SanityImage;
+  gallery?: Array<{
+    _key: string;
+    asset: {
+      _ref: string;
+      _type: "reference";
+    };
+    hotspot?: {
+      x: number;
+      y: number;
+    };
+  }>;
   stack?: string[];
   body?: string;
   architectureNote?: string;
@@ -65,8 +73,8 @@ export async function getRelatedProjects(
   slug: string,
   section: string,
   count: number = 2
-): Promise<ProjectData[]> {
-  const all: ProjectData[] = await client.fetch(relatedProjectsQuery, {
+): Promise<RelatedProjectData[]> {
+  const all: RelatedProjectData[] = await client.fetch(relatedProjectsQuery, {
     slug,
   });
   const sameSection = all.filter((p) => p.section === section);

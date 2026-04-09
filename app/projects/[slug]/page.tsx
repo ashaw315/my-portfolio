@@ -6,7 +6,6 @@ import {
   getAllProjectSlugs,
   getRelatedProjects,
 } from "@/lib/projects";
-import { urlFor } from "@/sanity/lib/image";
 import ProjectHeader from "@/components/project/ProjectHeader";
 import ProjectBody from "@/components/project/ProjectBody";
 import RelatedProjects from "@/components/project/RelatedProjects";
@@ -47,17 +46,6 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   return (
     <article className="w-full max-w-content mx-auto px-6 pt-12 pb-12">
       <ProjectHeader project={project} />
-
-      {project.thumbnail && (
-        <div className="my-12 overflow-hidden rounded-sm">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={urlFor(project.thumbnail).width(1600).url()}
-            alt={`Screenshot of ${project.title}`}
-            className="w-full aspect-[16/10] object-cover"
-          />
-        </div>
-      )}
 
       <ProjectBody project={project} />
 

@@ -8,7 +8,7 @@ export const homeProjectsQuery = `
     shortDescription,
     tagline,
     liveUrl,
-    thumbnail,
+    "thumbnail": gallery[0].asset->url,
     section
   }
 `;
@@ -26,7 +26,10 @@ export const projectBySlugQuery = `
     role,
     liveUrl,
     githubUrl,
-    thumbnail,
+    gallery[] {
+      ...,
+      asset->
+    },
     stack,
     body,
     architectureNote
@@ -45,7 +48,7 @@ export const relatedProjectsQuery = `
     title,
     tagline,
     type,
-    thumbnail,
+    "thumbnail": gallery[0].asset->url,
     section
   }
 `;

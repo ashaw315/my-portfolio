@@ -110,11 +110,61 @@ body {
 
   .project-main {
     width: 60%;
+    min-width: 0;
+    overflow: hidden;
   }
 
   .project-sidebar {
     width: 40%;
     padding-left: 3rem;
+  }
+}
+
+/* Project carousel — fixed-height container with image fill overrides
+   to defeat global img resets. */
+.carousel-container {
+  height: 420px;
+}
+
+.carousel-container img {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  object-fit: cover !important;
+  object-position: center top !important;
+  display: block !important;
+}
+
+/* Live site icon — rainbow gradient spin on hover */
+@keyframes spin-circle {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.circle-spinning {
+  animation: spin-circle 2s linear infinite;
+  transform-origin: 12px 12px;
+}
+
+/* Mobile-only sidebar placement — shows between carousel and body text on
+   small screens. Hidden on desktop. On mobile the "real" sidebar (direct
+   child of .project-columns) is hidden so only the nested duplicate renders. */
+.mobile-sidebar {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .mobile-sidebar {
+    display: block;
+    margin-bottom: 2rem;
+  }
+
+  .project-columns > .project-sidebar {
+    display: none;
   }
 }
 

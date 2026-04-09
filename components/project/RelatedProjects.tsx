@@ -2,11 +2,10 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import type { ProjectData } from "@/lib/projects";
-import { urlFor } from "@/sanity/lib/image";
+import type { RelatedProjectData } from "@/lib/projects";
 
 interface RelatedProjectsProps {
-  projects: ProjectData[];
+  projects: RelatedProjectData[];
 }
 
 export default function RelatedProjects({ projects }: RelatedProjectsProps) {
@@ -40,7 +39,7 @@ export default function RelatedProjects({ projects }: RelatedProjectsProps) {
             {project.thumbnail && (
               // eslint-disable-next-line @next/next/no-img-element
               <img
-                src={urlFor(project.thumbnail).width(240).url()}
+                src={project.thumbnail}
                 alt={`Screenshot of ${project.title}`}
                 className="related-card-image"
                 style={{

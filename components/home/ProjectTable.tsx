@@ -4,6 +4,7 @@ import { useState, useRef } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import type { HomeProjectData } from "@/lib/projects";
+import LiveSiteIcon from "@/components/ui/LiveSiteIcon";
 
 interface ProjectTableProps {
   projects: HomeProjectData[];
@@ -200,13 +201,13 @@ function ProjectRow({
               title="View live site"
               onClick={(e) => e.stopPropagation()}
               style={{
-                color: "var(--color-accent)",
-                fontSize: "8px",
+                display: "inline-flex",
+                alignItems: "center",
                 lineHeight: 1,
                 textDecoration: "none",
               }}
             >
-              ●
+              <LiveSiteIcon />
             </a>
           ) : null}
         </span>

@@ -33,6 +33,10 @@ export const metadata: Metadata = {
   },
   description:
     "Full-stack engineer and artist based in Brooklyn.",
+  icons: {
+    icon: "/favicon.svg",
+    shortcut: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({

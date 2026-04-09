@@ -1,5 +1,6 @@
 import { MDXRemote } from "next-mdx-remote/rsc";
 import ArchitectureNote from "./ArchitectureNote";
+import ProjectCarousel from "./ProjectCarousel";
 import ProjectSidebar from "./ProjectSidebar";
 import type { ProjectData } from "@/lib/projects";
 
@@ -12,6 +13,19 @@ export default function ProjectBody({ project }: ProjectBodyProps) {
     <>
       <div className="project-columns">
         <div className="project-main">
+          {project.gallery && project.gallery.length > 0 && (
+            <div style={{ marginBottom: "2rem" }}>
+              <ProjectCarousel
+                images={project.gallery}
+                title={project.title}
+              />
+            </div>
+          )}
+          {/* Mobile-only sidebar — shows between carousel and body on small
+              screens. Hidden on desktop via CSS. */}
+          <div className="mobile-sidebar">
+            <ProjectSidebar project={project} />
+          </div>
           <div className="prose">
             {project.body && <MDXRemote source={project.body} />}
           </div>
