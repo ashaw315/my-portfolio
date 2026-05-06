@@ -10,14 +10,6 @@ interface ProjectTableProps {
   projects: HomeProjectData[];
 }
 
-const TABLE_TYPE_MAP: Record<string, string> = {
-  "finance-tracker": "Full-Stack",
-  "daily-news-digest": "Automation",
-  "draw-together": "Full-Stack",
-  "photo-a-day": "Automation",
-  "we-were-here-briefly": "Lab",
-};
-
 const FILTER_LABELS = ["All", "Full-Stack", "Automation", "Lab"] as const;
 
 function isValidLiveUrl(url: string | undefined): boolean {
@@ -40,10 +32,11 @@ export default function ProjectTable({ projects }: ProjectTableProps) {
     sortDesc ? b.year - a.year : a.year - b.year
   );
 
-  const filtered =
-    activeFilter === "All"
-      ? sorted
-      : sorted.filter((p) => TABLE_TYPE_MAP[p.slug] === activeFilter);
+  const filtered = sorted.filter(
+    (p) =>
+      activeFilter === "All" ||
+      p.type?.toLowerCase() === activeFilter.toLowerCase()
+  );
 
   return (
     <section
@@ -140,7 +133,6 @@ export default function ProjectTable({ projects }: ProjectTableProps) {
             <ProjectRow
               key={project.slug}
               project={project}
-              tableType={TABLE_TYPE_MAP[project.slug] || project.type}
               index={index}
               isFirst={index === 0}
               skipInitial={skipInitial}
@@ -154,13 +146,11 @@ export default function ProjectTable({ projects }: ProjectTableProps) {
 
 function ProjectRow({
   project,
-  tableType,
   index,
   isFirst,
   skipInitial,
 }: {
   project: HomeProjectData;
-  tableType: string;
   index: number;
   isFirst: boolean;
   skipInitial: boolean;
@@ -190,7 +180,7 @@ function ProjectRow({
           <span className="project-table-desc">
             {project.shortDescription || project.tagline}
           </span>
-          <span className="project-table-type">{tableType}</span>
+          <span className="project-table-type">{project.type}</span>
         </Link>
         <span className="project-table-live">
           {hasLiveUrl ? (
